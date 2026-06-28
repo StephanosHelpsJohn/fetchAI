@@ -81,8 +81,7 @@ export function EventRetrieverApp() {
               // Initialize scan sequence
             </p>
             <h2 className="font-display mt-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              Predict event intent{" "}
-              <span className="text-neon">before they RSVP</span>
+              Predict Event Intent
             </h2>
             <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-slate-400">
               Feed social handles into the engine. Our puppy parses public
