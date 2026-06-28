@@ -1,4 +1,4 @@
-import type { CompanyInfo, TeamMember } from "@/types/company";
+import type { CompanyInfo, CompanyLookupResult, TeamMember } from "@/types/company";
 
 export const GAMERPLUG_CURATED: CompanyInfo = {
   name: "GamerPlug",
@@ -48,6 +48,15 @@ export const GAMERPLUG_TEAM: TeamMember[] = [
     decisionMakerLikelihood: 52,
   },
 ];
+
+export const GAMERPLUG_LOOKUP_RESULT: CompanyLookupResult = {
+  company: {
+    ...GAMERPLUG_CURATED,
+    employeeCount: 4,
+  },
+  team: GAMERPLUG_TEAM,
+  source: "curated",
+};
 
 export function isGamerPlugQuery(query: string): boolean {
   const normalized = query.trim().toLowerCase();

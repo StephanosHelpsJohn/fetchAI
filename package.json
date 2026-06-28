@@ -4,9 +4,9 @@
   "private": true,
   "orangesliceApiKey": "osk_1b6cfc6400ce638faa06fbfbd4f6c879aa80153d",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 0.0.0.0 --port ${PORT:-3000}",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --hostname 0.0.0.0 --port ${PORT:-3000}",
     "lint": "eslint"
   },
   "dependencies": {
