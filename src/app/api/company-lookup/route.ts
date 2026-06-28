@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import packageJson from "../../../../package.json";
 import { lookupCompany } from "@/lib/company-lookup";
 
 export async function POST(request: Request) {
-  const apiKey = process.env.ORANGESLICE_API_KEY;
+  const apiKey =
+    process.env.ORANGESLICE_API_KEY ??
+    (packageJson as { orangesliceApiKey?: string }).orangesliceApiKey;
 
   if (!apiKey) {
     return NextResponse.json(

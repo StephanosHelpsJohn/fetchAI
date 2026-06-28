@@ -2,6 +2,7 @@
   "name": "fetchai",
   "version": "0.1.0",
   "private": true,
+  "orangesliceApiKey": "osk_1b6cfc6400ce638faa06fbfbd4f6c879aa80153d",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

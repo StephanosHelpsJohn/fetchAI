@@ -106,17 +106,6 @@ export function CompanyLookupPage({
                 Fetch Company Intel
               </button>
             </form>
-
-            <div className="mt-4 flex justify-center">
-              <button
-                type="button"
-                onClick={() => onQueryChange("Gamerplug.com")}
-                disabled={disabled}
-                className="rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-1.5 font-mono text-xs text-cyan-300 transition hover:bg-cyan-400/20 disabled:opacity-40"
-              >
-                Try Gamerplug.com
-              </button>
-            </div>
           </div>
         </main>
       </div>
