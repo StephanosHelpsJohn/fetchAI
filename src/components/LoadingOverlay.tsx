@@ -7,13 +7,24 @@ import { LOADING_STEPS, LOADING_DURATION_MS } from "@/lib/mock-data";
 interface LoadingOverlayProps {
   active: boolean;
   onComplete: () => void;
+  steps?: readonly string[];
+  durationMs?: number;
+  title?: string;
+  statusLabel?: string;
 }
 
-const STEP_MS = LOADING_DURATION_MS / LOADING_STEPS.length;
-
-export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
+export function LoadingOverlay({
+  active,
+  onComplete,
+  steps = LOADING_STEPS,
+  durationMs = LOADING_DURATION_MS,
+  title = "Puppy on retrieval duty",
+  statusLabel = "BUILDING IDENTITY GRAPH",
+}: LoadingOverlayProps) {
   const [stepIndex, setStepIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const stepMs = durationMs / steps.length;
 
   useEffect(() => {
     if (!active) {
@@ -25,20 +36,20 @@ export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
     const start = Date.now();
     const tick = setInterval(() => {
       const elapsed = Date.now() - start;
-      const pct = Math.min(100, (elapsed / LOADING_DURATION_MS) * 100);
+      const pct = Math.min(100, (elapsed / durationMs) * 100);
       setProgress(pct);
       setStepIndex(
-        Math.min(LOADING_STEPS.length - 1, Math.floor(elapsed / STEP_MS)),
+        Math.min(steps.length - 1, Math.floor(elapsed / stepMs)),
       );
 
-      if (elapsed >= LOADING_DURATION_MS) {
+      if (elapsed >= durationMs) {
         clearInterval(tick);
         onComplete();
       }
     }, 50);
 
     return () => clearInterval(tick);
-  }, [active, onComplete]);
+  }, [active, onComplete, durationMs, stepMs, steps.length]);
 
   if (!active) return null;
 
@@ -46,22 +57,22 @@ export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050510]/90 backdrop-blur-xl">
       <div className="neo-card neo-card-glow mx-4 w-full max-w-lg animate-fade-in rounded-2xl px-8 py-8 text-center">
         <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-cyan-400/70">
-          // Fetch sequence active · {LOADING_DURATION_MS / 1000}s window
+          // Fetch sequence active · {durationMs / 1000}s window
         </p>
 
         <div className="mt-4 overflow-hidden rounded-xl border border-cyan-400/10 bg-[#080c1c] px-3 py-4">
-          <FetchLoadingScene durationSec={LOADING_DURATION_MS / 1000} />
+          <FetchLoadingScene durationSec={durationMs / 1000} />
         </div>
 
         <h3 className="font-display mt-5 text-xl font-bold text-white">
-          Puppy on retrieval duty
+          {title}
         </h3>
 
         <p
           key={stepIndex}
           className="mt-2 min-h-[2rem] animate-fade-in font-mono text-xs leading-relaxed text-slate-400"
         >
-          {LOADING_STEPS[stepIndex]}
+          {steps[stepIndex]}
         </p>
 
         <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-white/5 ring-1 ring-white/10">
@@ -74,7 +85,7 @@ export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
         </div>
 
         <p className="mt-3 font-mono text-[10px] text-slate-600">
-          SYNC {Math.round(progress)}% · BUILDING IDENTITY GRAPH
+          SYNC {Math.round(progress)}% · {statusLabel}
         </p>
       </div>
     </div>

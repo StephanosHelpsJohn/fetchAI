@@ -1,5 +1,5 @@
-import { EventRetrieverApp } from "@/components/EventRetrieverApp";
+import { AppFlow } from "@/components/AppFlow";
 
 export default function Home() {
-  return <EventRetrieverApp />;
+  return <AppFlow />;
 }
