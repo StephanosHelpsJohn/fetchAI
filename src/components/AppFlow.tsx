@@ -7,6 +7,7 @@ import { IntentScanView } from "./IntentScanView";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { Dashboard } from "./Dashboard";
 import { resolveProfile } from "@/lib/mock-data";
+import { lookupCompanyAction } from "@/app/actions/company-lookup";
 import {
   GAMERPLUG_LOOKUP_RESULT,
   isGamerPlugQuery,
@@ -69,37 +70,17 @@ export function AppFlow() {
     pendingCompanyResult.current = null;
 
     try {
-      const response = await fetch("/api/company-lookup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
-      });
-
-      const contentType = response.headers.get("content-type") ?? "";
-      if (!contentType.includes("application/json")) {
-        throw new Error("API_UNAVAILABLE");
-      }
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error ?? "Company lookup failed.");
-      }
-
-      pendingCompanyResult.current = data as CompanyLookupResult;
-    } catch (error) {
       if (isGamerPlugQuery(query)) {
+        // Client-side only — no API fetch, works on Replit/static hosts
         pendingCompanyResult.current = GAMERPLUG_LOOKUP_RESULT;
-        setLookupError(null);
       } else {
-        const message =
-          error instanceof Error && error.message === "API_UNAVAILABLE"
-            ? "Company lookup API is unavailable. Run with `npm run build && npm run start` so API routes are enabled."
-            : error instanceof Error
-              ? error.message
-              : "Company lookup failed.";
-        setLookupError(message);
-        pendingCompanyResult.current = null;
+        pendingCompanyResult.current = await lookupCompanyAction(query);
       }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Company lookup failed.";
+      setLookupError(message);
+      pendingCompanyResult.current = null;
     } finally {
       apiFinished.current = true;
       tryAdvanceFromCompanyLoading();
