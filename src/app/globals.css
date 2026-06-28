@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFF8F0;
-  --foreground: #1e293b;
-  --cream: #FFF8F0;
-  --sky-light: #E0F2FE;
-  --orange-accent: #F97316;
+  --background: #050510;
+  --foreground: #e2e8f0;
+  --neon-cyan: #22d3ee;
+  --neon-violet: #a78bfa;
+  --neon-amber: #fbbf24;
+  --surface: rgba(255, 255, 255, 0.03);
+  --border: rgba(255, 255, 255, 0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-cream: var(--cream);
-  --color-sky-light: var(--sky-light);
-  --color-orange-accent: var(--orange-accent);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-violet: var(--neon-violet);
+  --color-neon-amber: var(--neon-amber);
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-space-grotesk);
   --font-mono: var(--font-geist-mono);
 }
 
@@ -24,65 +27,274 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+.font-display {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+}
+
+/* ── Futuristic surfaces ── */
+
+.neo-card {
+  background: rgba(8, 12, 28, 0.75);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.neo-card-glow {
+  position: relative;
+}
+
+.neo-card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(34,211,238,0.5), rgba(167,139,250,0.3), rgba(34,211,238,0.1));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.neo-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.neo-input::placeholder {
+  color: rgba(148, 163, 184, 0.5);
+}
+
+.neo-input:focus {
+  outline: none;
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12), 0 0 20px rgba(34, 211, 238, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.btn-neo {
+  background: linear-gradient(135deg, rgba(34,211,238,0.9) 0%, rgba(99,102,241,0.9) 100%);
+  box-shadow:
+    0 0 24px rgba(34, 211, 238, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+  color: #050510;
+  font-weight: 600;
+}
+
+.btn-neo:hover:not(:disabled) {
+  box-shadow:
+    0 0 36px rgba(34, 211, 238, 0.5),
+    0 0 60px rgba(167, 139, 250, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-neo:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(34, 211, 238, 0.3);
+  color: #e2e8f0;
+}
+
+.holo-stage {
+  background: radial-gradient(ellipse at center, rgba(34,211,238,0.08) 0%, transparent 70%);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  box-shadow:
+    0 0 40px rgba(34, 211, 238, 0.1),
+    inset 0 0 60px rgba(34, 211, 238, 0.03);
+}
+
+.text-neon {
+  background: linear-gradient(90deg, #22d3ee, #a78bfa, #22d3ee);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+.badge-neo {
+  background: rgba(34, 211, 238, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  color: #22d3ee;
+}
+
+/* ── Animations ── */
+
 @keyframes tail-wag {
-  0%, 100% { transform: rotate(-8deg); }
-  50% { transform: rotate(12deg); }
+  0%, 100% { transform: rotate(-20deg); }
+  50% { transform: rotate(24deg); }
 }
 
 @keyframes tail-wag-fast {
-  0%, 100% { transform: rotate(-15deg); }
-  50% { transform: rotate(20deg); }
+  0%, 100% { transform: rotate(-30deg); }
+  50% { transform: rotate(34deg); }
 }
 
 @keyframes sniff-bob {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(4px) rotate(-3deg); }
-  75% { transform: translateY(2px) rotate(3deg); }
+  50% { transform: translateY(4px) rotate(3deg); }
+}
+
+@keyframes puppy-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 @keyframes sparkle {
   0%, 100% { opacity: 0; transform: scale(0.5); }
-  50% { opacity: 1; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes dash {
-  to { stroke-dashoffset: -20; }
+  to { stroke-dashoffset: -24; }
 }
 
 @keyframes sniff-trail {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 0.9; transform: scale(1.2); }
+  0%, 100% { opacity: 0.2; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.4); }
 }
 
-.animate-tail-wag {
-  animation: tail-wag 1.2s ease-in-out infinite;
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(24px, -20px); }
 }
 
-.animate-tail-wag-fast {
-  animation: tail-wag-fast 0.4s ease-in-out infinite;
+@keyframes float-medium {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, 16px); }
 }
 
-.animate-sniff-bob {
-  animation: sniff-bob 0.6s ease-in-out infinite;
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-.animate-sparkle {
-  animation: sparkle 2s ease-in-out infinite;
+@keyframes pulse-neon {
+  0%, 100% { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(34, 211, 238, 0.3), 0 0 60px rgba(167, 139, 250, 0.15); }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
-.animate-dash {
-  animation: dash 1s linear infinite;
+.animate-tail-wag { animation: tail-wag 0.7s ease-in-out infinite; }
+.animate-tail-wag-fast { animation: tail-wag-fast 0.25s ease-in-out infinite; }
+.animate-sniff-bob { animation: sniff-bob 0.4s ease-in-out infinite; }
+.animate-puppy-bounce { animation: puppy-bounce 1.8s ease-in-out infinite; }
+.animate-sparkle { animation: sparkle 2s ease-in-out infinite; }
+.animate-fade-in { animation: fade-in 0.4s ease-out; }
+.animate-fade-up { animation: fade-up 0.65s ease-out both; }
+.animate-dash { animation: dash 0.8s linear infinite; }
+.animate-sniff-trail { animation: sniff-trail 0.8s ease-in-out infinite; }
+.animate-float-slow { animation: float-slow 10s ease-in-out infinite; }
+.animate-float-medium { animation: float-medium 7s ease-in-out infinite; }
+.animate-pulse-neon { animation: pulse-neon 3s ease-in-out infinite; }
+.animate-scan-line { animation: scan-line 8s linear infinite; }
+.animate-shimmer-bg { animation: shimmer 2s linear infinite; }
+
+/* ── Fetch loading scene ── */
+
+@keyframes fetch-ball-throw {
+  0%, 14% { transform: translate(28px, 88px); opacity: 0; }
+  16% { transform: translate(40px, 80px); opacity: 1; }
+  28% { transform: translate(120px, 20px); }
+  38% { transform: translate(210px, 72px); opacity: 1; }
+  40%, 100% { transform: translate(210px, 72px); opacity: 0; }
 }
 
-.animate-sniff-trail {
-  animation: sniff-trail 1s ease-in-out infinite;
+@keyframes fetch-ball-return {
+  0%, 68% { transform: translate(200px, 68px); opacity: 0; }
+  72% { transform: translate(200px, 68px); opacity: 1; }
+  88% { transform: translate(60px, 78px); opacity: 1; }
+  100% { transform: translate(28px, 88px); opacity: 0; }
 }
+
+@keyframes fetch-dog-chase {
+  0%, 38% { transform: translate(0, 0); opacity: 0; }
+  40% { transform: translate(0, 2px); opacity: 1; }
+  52% { transform: translate(100px, 0); opacity: 1; }
+  62% { transform: translate(150px, -10px) rotate(-6deg); opacity: 1; }
+  68% { transform: translate(150px, 0) rotate(0deg); opacity: 1; }
+  84% { transform: translate(30px, 2px); opacity: 1; }
+  90%, 100% { transform: translate(0, 0); opacity: 0; }
+}
+
+@keyframes fetch-dog-sitting {
+  0%, 36% { opacity: 1; transform: translateY(0); }
+  14%, 16% { transform: translateY(-3px); }
+  38%, 88% { opacity: 0; }
+  90%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fetch-tail-excited {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(18deg); }
+}
+
+@keyframes fetch-speed-lines {
+  0%, 38% { opacity: 0; }
+  42%, 72% { opacity: 0.6; }
+  76%, 100% { opacity: 0; }
+}
+
+@keyframes fetch-dust {
+  0%, 36% { opacity: 0; transform: scale(0.5); }
+  40% { opacity: 0.8; transform: scale(1); }
+  48% { opacity: 0; transform: scale(1.2); }
+  100% { opacity: 0; }
+}
+
+@keyframes fetch-throw-hand {
+  0%, 12% { opacity: 0; }
+  14% { opacity: 1; }
+  18%, 100% { opacity: 0; }
+}
+
+.fetch-ball { animation: fetch-ball-throw var(--fetch-duration, 7s) ease-in-out infinite; transform-origin: center; }
+.fetch-ball-caught { animation: fetch-ball-return var(--fetch-duration, 7s) ease-in-out infinite; transform-origin: center; }
+.fetch-dog-sitting { animation: fetch-dog-sitting var(--fetch-duration, 7s) ease-in-out infinite; transform-origin: 40px 80px; }
+.fetch-dog-running { animation: fetch-dog-chase var(--fetch-duration, 7s) ease-in-out infinite; transform-origin: center bottom; }
+.fetch-tail-sit { animation: fetch-tail-excited 0.3s ease-in-out infinite; transform-origin: 20px 60px; }
+.fetch-speed-lines { animation: fetch-speed-lines var(--fetch-duration, 7s) ease-in-out infinite; }
+.fetch-dust { animation: fetch-dust var(--fetch-duration, 7s) ease-in-out infinite; transform-origin: center; }
+.fetch-throw-hand { animation: fetch-throw-hand var(--fetch-duration, 7s) ease-in-out infinite; }
+
+/* Scrollbar for event feed */
+.scrollbar-thin::-webkit-scrollbar { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(34,211,238,0.2); border-radius: 4px; }

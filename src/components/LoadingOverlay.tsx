@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PixelRetriever } from "./PixelRetriever";
-import { LOADING_STEPS } from "@/lib/mock-data";
+import { FetchLoadingScene } from "./FetchLoadingScene";
+import { LOADING_STEPS, LOADING_DURATION_MS } from "@/lib/mock-data";
 
 interface LoadingOverlayProps {
   active: boolean;
   onComplete: () => void;
 }
 
-const DURATION_MS = 3000;
-const STEP_MS = DURATION_MS / LOADING_STEPS.length;
+const STEP_MS = LOADING_DURATION_MS / LOADING_STEPS.length;
 
 export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
   const [stepIndex, setStepIndex] = useState(0);
@@ -26,11 +25,13 @@ export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
     const start = Date.now();
     const tick = setInterval(() => {
       const elapsed = Date.now() - start;
-      const pct = Math.min(100, (elapsed / DURATION_MS) * 100);
+      const pct = Math.min(100, (elapsed / LOADING_DURATION_MS) * 100);
       setProgress(pct);
-      setStepIndex(Math.min(LOADING_STEPS.length - 1, Math.floor(elapsed / STEP_MS)));
+      setStepIndex(
+        Math.min(LOADING_STEPS.length - 1, Math.floor(elapsed / STEP_MS)),
+      );
 
-      if (elapsed >= DURATION_MS) {
+      if (elapsed >= LOADING_DURATION_MS) {
         clearInterval(tick);
         onComplete();
       }
@@ -42,30 +43,38 @@ export function LoadingOverlay({ active, onComplete }: LoadingOverlayProps) {
   if (!active) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-cream/95 backdrop-blur-sm">
-      <div className="flex max-w-lg flex-col items-center px-6 text-center">
-        <PixelRetriever variant="sniffing" size="lg" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#050510]/90 backdrop-blur-xl">
+      <div className="neo-card neo-card-glow mx-4 w-full max-w-lg animate-fade-in rounded-2xl px-8 py-8 text-center">
+        <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-cyan-400/70">
+          // Fetch sequence active · {LOADING_DURATION_MS / 1000}s window
+        </p>
 
-        <h3 className="mt-6 text-lg font-semibold text-slate-800">
-          Hot on the trail…
+        <div className="mt-4 overflow-hidden rounded-xl border border-cyan-400/10 bg-[#080c1c] px-3 py-4">
+          <FetchLoadingScene durationSec={LOADING_DURATION_MS / 1000} />
+        </div>
+
+        <h3 className="font-display mt-5 text-xl font-bold text-white">
+          Puppy on retrieval duty
         </h3>
 
         <p
           key={stepIndex}
-          className="mt-3 min-h-[1.5rem] animate-fade-in text-sm text-slate-600"
+          className="mt-2 min-h-[2rem] animate-fade-in font-mono text-xs leading-relaxed text-slate-400"
         >
           {LOADING_STEPS[stepIndex]}
         </p>
 
-        <div className="mt-6 h-2.5 w-full max-w-xs overflow-hidden rounded-full bg-sky-100">
+        <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-white/5 ring-1 ring-white/10">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-sky-400 to-orange-400 transition-all duration-100 ease-linear"
+            className="relative h-full rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-cyan-400 transition-all duration-100 ease-linear"
             style={{ width: `${progress}%` }}
-          />
+          >
+            <div className="absolute inset-0 animate-shimmer-bg bg-gradient-to-r from-transparent via-white/30 to-transparent bg-[length:200%_100%]" />
+          </div>
         </div>
 
-        <p className="mt-2 text-xs text-slate-400">
-          {Math.round(progress)}% retrieved
+        <p className="mt-3 font-mono text-[10px] text-slate-600">
+          SYNC {Math.round(progress)}% · BUILDING IDENTITY GRAPH
         </p>
       </div>
     </div>
